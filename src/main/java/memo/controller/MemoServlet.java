@@ -11,6 +11,7 @@ import memo.model.dto.MemoDTO;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 @WebServlet(urlPatterns = {"/memos", "/memos/new"})
 public class MemoServlet extends HttpServlet {
@@ -40,7 +41,9 @@ public class MemoServlet extends HttpServlet {
             return;
         }
         // 목록
-        Long userId = 1L; // 1번
+//        Long userId = 1L; // 1번
+        Random r = new Random();
+        Long userId = r.nextLong(1, 4); // 1~3번
         List<MemoDTO> memos = memoDAO.findByUserId(userId, 50, 0);
         req.setAttribute("memos", memos);
         req.getRequestDispatcher("/WEB-INF/views/list.jsp").forward(req, resp);
@@ -56,7 +59,9 @@ public class MemoServlet extends HttpServlet {
 
         // 검증 생략...
 
-        Long userId = 1L;
+//        Long userId = 1L;
+        Random r = new Random();
+        Long userId = r.nextLong(1, 4); // 1~3번
         memoDAO.create(userId, title, content);
         // getContextPath -> [localhost:port/???]
         resp.sendRedirect(req.getContextPath() + "/memos");
