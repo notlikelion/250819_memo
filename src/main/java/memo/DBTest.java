@@ -30,16 +30,27 @@ public class DBTest {
         }
         System.out.println("😀 메모 작성 완료");
         // 단건 조회
+        System.out.println("😀 단건 조회 시작");
         System.out.println(
                 memoDAO.findById(memoId1)
         );
+        System.out.println("😀 단건 조회 완료");
         // 유저 기준 목록 조회
+        System.out.println("😀 유저 기준 목록 조회 시작");
         System.out.println(
                 memoDAO.findByUserId(3L, 10, 0)
         );
+        System.out.println("😀 유저 기준 목록 조회 완료");
         // 조인 조회
+        System.out.println("😀 조인 조회 시작");
         System.out.println(
                 memoDAO.findAllWithAuthor(10, 0)
         );
+        System.out.println("😀 조인 조회 완료");
+        // 메모 삭제
+        System.out.println("😀 메모 삭제 시작");
+        memoDAO.deleteById(memoId1);
+        memoDAO.deleteById(memoId2);
+        System.out.println("😀 메모 삭제 완료");
     }
 }

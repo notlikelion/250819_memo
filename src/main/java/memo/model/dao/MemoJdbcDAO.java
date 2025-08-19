@@ -109,6 +109,21 @@ public class MemoJdbcDAO implements MemoDAO {
         }
     }
 
+    @Override
+    public int deleteById(Long memoId) {
+        final String sql = """
+                DELETE FROM memo
+                WHERE memo_id = ?
+                """;
+        try (Connection conn = DB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, memoId);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("MemoJdbcDAO.deleteById error", e);
+        }
+    }
+
 //    private MemoWithAuthorDTO mapMemoWithAuthor(ResultSet rs) throws SQLException {
 //        return new MemoWithAuthorDTO(
 //                rs.getLong("memo_id"),
