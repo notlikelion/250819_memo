@@ -12,7 +12,7 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public Long create(String username, String displayName) {
         final String sql = """
-                INSERT INTO user (username, display_name)
+                INSERT INTO user_account (username, display_name)
                 VALUES (?, ?)
                 """;
         try (Connection conn = DB.getConnection();
@@ -28,6 +28,7 @@ public class UserJdbcDAO implements UserDAO {
             }
             throw new SQLException("삽입 실패, user_account");
         } catch (SQLException e) {
+            System.err.println(e.getMessage());
             throw new RuntimeException("UserJdbcDAO.create error", e);
         }
     }
