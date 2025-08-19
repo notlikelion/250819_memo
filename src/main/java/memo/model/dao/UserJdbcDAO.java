@@ -12,9 +12,9 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public Long create(String username, String displayName) {
         final String sql = """
-        INSERT INTO user (username, display_name)
-        VALUES (?, ?)
-        """;
+                INSERT INTO user (username, display_name)
+                VALUES (?, ?)
+                """;
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql,
                      Statement.RETURN_GENERATED_KEYS)) {
@@ -32,29 +32,30 @@ public class UserJdbcDAO implements UserDAO {
         }
     }
 
-    private UserDTO mapUser(ResultSet rs) throws SQLException {
-        return new UserDTO(
-                rs.getLong("user_id"),
-                rs.getString("username"),
-                rs.getString("display_name"),
-                rs.getTimestamp("created_at").toLocalDateTime()
-        );
-    }
+//    private UserDTO mapUser(ResultSet rs) throws SQLException {
+//        return new UserDTO(
+//                rs.getLong("user_id"),
+//                rs.getString("username"),
+//                rs.getString("display_name"),
+//                rs.getTimestamp("created_at").toLocalDateTime()
+//        );
+//    }
 
     @Override
     public Optional<UserDTO> findById(Long userId) {
         final String sql = """
-        SELECT *
-        FROM user_account
-        WHERE user_id = ?
-        """;
+                SELECT *
+                FROM user_account
+                WHERE user_id = ?
+                """;
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, userId);
             try (ResultSet rs = ps.executeQuery()) { // PK
 //                if (!rs.next()) return Optional.empty();
 //                return Optional.of(mapUser(rs));
-                return rs.next() ? Optional.of(mapUser(rs)) : Optional.empty();
+//                return rs.next() ? Optional.of(mapUser(rs)) : Optional.empty();
+                return rs.next() ? Optional.of(UserDTO.fromResultSet(rs)) : Optional.empty();
             }
         } catch (SQLException e) {
             throw new RuntimeException("UserJdbcDAO.findById error", e);
@@ -64,17 +65,17 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public Optional<UserDTO> findByUsername(String username) {
         final String sql = """
-        SELECT *
-        FROM user_account
-        WHERE username = ?
-        """;
+                SELECT *
+                FROM user_account
+                WHERE username = ?
+                """;
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) { // PK
 //                if (!rs.next()) return Optional.empty();
 //                return Optional.of(mapUser(rs));
-                return rs.next() ? Optional.of(mapUser(rs)) : Optional.empty();
+                return rs.next() ? Optional.of(UserDTO.fromResultSet(rs)) : Optional.empty();
             }
         } catch (SQLException e) {
             throw new RuntimeException("UserJdbcDAO.findByUsername error", e);
@@ -84,20 +85,21 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public List<UserDTO> findAll(int limit, int offset) {
         final String sql = """
-        SELECT *
-        FROM user_account
-        LIMIT ? OFFSET ?
-        """;
+                SELECT *
+                FROM user_account
+                LIMIT ? OFFSET ?
+                """;
         try (Connection conn = DB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, limit);
             ps.setInt(2, offset);
             try (ResultSet rs = ps.executeQuery()) {
                 List<UserDTO> list = new ArrayList<>();
-                while (rs.next()) list.add(mapUser(rs));
+                while (rs.next()) list.add(UserDTO.fromResultSet(rs));
                 return list;
             }
         } catch (SQLException e) {
             throw new RuntimeException("UserJdbcDAO.findAll error", e);
-        }    }
+        }
+    }
 }
