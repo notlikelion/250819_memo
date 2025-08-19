@@ -1,4 +1,10 @@
 package memo.model.dto;
 
-public record UserDTO() {
-}
+import java.time.LocalDateTime;
+
+public record UserDTO(
+   Long userId, // BIGINT
+   String username,
+   String displayName,
+   LocalDateTime createdAt
+) {}

@@ -2,9 +2,10 @@ package memo.model.dto;
 
 import java.time.LocalDateTime;
 
-public record UserDTO(
-   Long userId, // BIGINT
-   String username,
-   String displayName,
+public record MemoDTO(
+   Long memoId, // BIGINT
+   Long userId, // MemoDTO PK -> FK
+   String title,
+   String content,
    LocalDateTime createdAt
 ) {}
