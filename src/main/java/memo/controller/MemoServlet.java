@@ -36,14 +36,14 @@ public class MemoServlet extends HttpServlet {
         if (servletPath.equals("/memos/new")) { // == 하면 안됩니다
             // 작성 (create)
             // 파일 경로는 그대로...
-            req.getRequestDispatcher("/views/form.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(req, resp);
             return;
         }
         // 목록
         Long userId = 1L; // 1번
         List<MemoDTO> memos = memoDAO.findByUserId(userId, 50, 0);
         req.setAttribute("memos", memos);
-        req.getRequestDispatcher("/views/list.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/list.jsp").forward(req, resp);
     }
 
     @Override

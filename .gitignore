@@ -39,3 +39,6 @@ build/
 
 ### 환경변수
 .env
+
+### 톰캣
+.smarttomcat
